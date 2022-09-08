@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.vue_springboot.mapper.Vuemapper">
+    <!--定义结果映射，因为表字段名与实体属性名不完全一致-->
+
+    <resultMap id="lpianMap" type="com.example.vue_springboot.bean.Lpian">
+        <result property="u_id" column="u_id"/>
+        <result property="class_name" column="class_name"/>
+        <result property="score" column="score"/>
+        <result property="xmin" column="xmin"/>
+        <result property="ymin" column="ymin"/>
+        <result property="xmax" column="xmax"/>
+        <result property="ymax" column="ymax"/>
+    </resultMap>
+    <resultMap id="lpianMap1" type="com.example.vue_springboot.bean.Lpian">
+        <result property="u_id" column="u_id"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="lpianMap">
+        select * from lpianjianche
+    </select>
+    <insert id="insert">
+        insert into lpianjianche(u_id,class_name,score,xmin,ymin,xmax,ymax,len,times,only_file) values (#{u_id},#{class_name},#{score},#{xmin},#{ymin},#{xmax},#{ymax},#{len},#{times},#{only_file})
+    </insert>
+
+    <insert id="fileinsert">
+        insert into sys_file(id,filename,type,size,url,is_delete) values (#{id},#{filename},#{type},#{size},#{url},#{is_delete})
+    </insert>
+
+    <update id="updata">
+        update lpianjianche
+            <set>
+                <if test="class_name!=null">
+                    class_name=#{class_name},
+                </if>
+                <if test="score!=null">
+                    score=#{score},
+                </if>
+                <if test="xmin!=null">
+                    xmin=#{xmin},
+                </if>
+                <if test="ymin!=null">
+                    ymin=#{ymin},
+                </if>
+                <if test="xmax!=null">
+                    xmax=#{xmax},
+                </if>
+                <if test="ymax!=null">
+                    ymax=#{ymax},
+                </if>
+                <if test="len!=null">
+                    len=#{len}
+                </if>
+
+            </set>
+        where u_id=#{u_id}
+    </update>
+
+    <delete id="deletByid">
+        delete from lpianjianche where u_id=#{u_id}
+    </delete>
+
+    <select id="selectPage" resultMap="lpianMap">
+        select * from lpianjianche where class_name like #{class_name} or u_id like #{class_name} order by times asc limit #{pagNum},#{pagSize}
+    </select>
+
+    <select id="selectPage_flaw" resultMap="lpianMap">
+        select * from lpianjianche where only_file = #{only_file} limit #{pagNum},#{pagSize}
+    </select>
+
+    <resultMap id="jiaoMap" type="com.example.vue_springboot.bean.Jiaofei">
+        <result property="type" column="type"/>
+        <result property="num1" column="num1"/>
+        <result property="num" column="num"/>
+        <result property="u_id" column="u_id"/>
+    </resultMap>
+
+    <select id="jiaofeiAll" resultMap="jiaoMap">
+        select type,count(u_id) as num1 from jiaofei GROUP BY type
+    </select>
+    <select id="jiaofeiAll1" resultMap="jiaoMap">
+        select u_id,num1 as num12 from jiaofei where type='高价值型客户'
+    </select>
+    <select id="jiaofeiAll2" resultMap="jiaoMap">
+        select u_id,num1 from jiaofei1
+    </select>
+
+<!--    <select id="selectPage1" resultMap="jiaoMap">-->
+<!--        select * from jiaofei where limit #{pagNum},#{pagSize}-->
+<!--    </select>-->
+<!--用户登录-->
+    <select id="finduser" resultType="com.example.vue_springboot.bean.User">
+        select * from lp_user where username=#{username} and password=#{password}
+    </select>
+
+    <insert id="userInsert">
+        insert into lp_user(id,username,password,phone) values (null ,#{username},#{password},#{phone})
+    </insert>
+</mapper>
+

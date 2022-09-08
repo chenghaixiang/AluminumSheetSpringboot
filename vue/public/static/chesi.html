@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcss.com/html2canvas/0.5.0-beta4/html2canvas.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery-1.11.0.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+</head>
+<body>
+<div id="container">
+    <button  onclick="start1()">开始</button>
+    <button onclick="int=window.clearInterval(int)">
+        Stop interval</button>
+    <video width="100%" height="705px" controls id="video">
+        <source src="img/047C478D4BCE66C600589F08029CB58A.mp4" type="video/mp4">
+        您的浏览器不支持Video标签。
+    </video>
+</div>
+<script type="text/javascript">
+    function cheis(){
+        const video = document.getElementById('video');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+
+
+        // download picture
+        var base64=canvas.toDataURL('image/png');
+        var imgfile=dataURLtoFile(base64,'signature.png');
+        var xhr=new XMLHttpRequest();
+        var fd=new FormData();
+        xhr.open('POST','http://localhost:9090/file/upload');
+        fd.append("file",imgfile,imgfile.name);
+        console.log(imgfile);
+        console.log(fd);
+        xhr.send(fd);
+    }
+
+    function dataURLtoFile(dataurl, filename) {//将base64转换为文件，dataurl为base64字符串，filename为文件名（必须带后缀名，如.jpg,.png）
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        this.fileList = new File([u8arr], filename, {type:mime});
+        return this.fileList;
+    }
+
+    var int;
+    function start1(){
+        int=self.setInterval(cheis,2700)
+        return int
+    }
+</script>
+</body>
+</html>

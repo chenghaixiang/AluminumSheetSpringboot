@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    本机测试mysql
+#    url: jdbc:mysql://localhost:3306/web?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+#    服务器上mysql
+    url: jdbc:mysql://101.42.234.173:3306/web?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: lxy
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+server:
+  port: 9090
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+files:
+  upload:
+#    本机测试文件夹
+#    path: D:\filestore\
+#    服务器测试文件
+     path: /home/lxy/test/
+
+
